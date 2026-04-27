@@ -6,8 +6,12 @@ import jakarta.persistence.*;
 @Table(name = "permissions")
 public class Permission {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
+    @Column(name = "name")
     private String name;
 
     @ManyToOne
