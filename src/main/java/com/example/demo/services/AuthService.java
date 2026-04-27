@@ -39,5 +39,5 @@ public class AuthService {
         return jwtUtils.generateJwtToken(newUser.getEmail());
     }
 
-    
+
 }
