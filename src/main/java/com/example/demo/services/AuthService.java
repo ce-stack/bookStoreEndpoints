@@ -8,6 +8,7 @@ import com.example.demo.models.User;
 import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.security.JwtUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,10 @@ public class AuthService {
         User newUser = new User(hashedPassword, defaultRole, defaultRole.getName(), request.getEmail(), request.getFull_name());
         userRepository.save(newUser);
         return jwtUtils.generateJwtToken(newUser.getEmail());
+    }
+
+    public void logout(HttpServletRequest request) {
+        request.getSession().invalidate();
     }
 
 

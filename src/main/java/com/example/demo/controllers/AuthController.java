@@ -4,6 +4,7 @@ package com.example.demo.controllers;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.services.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,14 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         return ResponseEntity.ok(authService.register(registerRequest));
     }
+
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request){
+        authService.logout(request);
+        return ResponseEntity.ok("logged out");
+    }
+
 
     @GetMapping("/test")
     public String test() {
