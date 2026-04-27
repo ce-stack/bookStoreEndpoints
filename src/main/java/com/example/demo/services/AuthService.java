@@ -38,7 +38,7 @@ public class AuthService {
         Optional<Role> defaultRoleOpt = roleRepository.findByName("USER");
         Role defaultRole = defaultRoleOpt.orElseThrow(() -> new RuntimeException("Role not found"));
         String hashedPassword = passwordEncoder.encode(request.getPassword());
-        User newUser = new User(request.getPassword(), defaultRole, defaultRole.getName(), request.getEmail(), request.getFull_name());
+        User newUser = new User(hashedPassword, defaultRole, defaultRole.getName(), request.getEmail(), request.getFull_name());
         userRepository.save(newUser);
         return jwtUtils.generateJwtToken(newUser.getEmail());
     }
