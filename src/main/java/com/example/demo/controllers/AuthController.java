@@ -6,10 +6,7 @@ import com.example.demo.dto.RegisterRequest;
 import com.example.demo.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -31,6 +28,17 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         return ResponseEntity.ok(authService.register(registerRequest));
     }
+
+    @GetMapping("/test")
+    public String test() {
+        return  "secured endpoint";
+    }
+
+    @GetMapping("/not_test")
+    public String notTest() {
+        return "not";
+    }
+
 
 
 }

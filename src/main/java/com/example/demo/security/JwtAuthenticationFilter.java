@@ -27,6 +27,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String email = jwtUtils.getUserNameFromJwtToken(token);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email , null , null);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+        }else {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Unauthorized: invalid or missing token");
         }
         filterChain.doFilter(request , response);
     }
