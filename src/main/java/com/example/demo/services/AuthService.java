@@ -8,6 +8,7 @@ import com.example.demo.models.User;
 import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.security.JwtUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,11 +19,13 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
 
-    public AuthService(UserRepository userRepository , RoleRepository roleRepository , JwtUtils jwtUtils) {
+    public AuthService(UserRepository userRepository , RoleRepository roleRepository , PasswordEncoder passwordEncoder ,JwtUtils jwtUtils) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
     }
 
@@ -34,6 +37,7 @@ public class AuthService {
     public String register(RegisterRequest request){
         Optional<Role> defaultRoleOpt = roleRepository.findByName("USER");
         Role defaultRole = defaultRoleOpt.orElseThrow(() -> new RuntimeException("Role not found"));
+        String hashedPassword = passwordEncoder.encode(request.getPassword());
         User newUser = new User(request.getPassword(), defaultRole, defaultRole.getName(), request.getEmail(), request.getFull_name());
         userRepository.save(newUser);
         return jwtUtils.generateJwtToken(newUser.getEmail());

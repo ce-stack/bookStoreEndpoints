@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -20,18 +21,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request , HttpServletResponse response , FilterChain filterChain) throws ServletException , IOException {
+    protected void doFilterInternal(HttpServletRequest request,HttpServletResponse response,FilterChain filterChain) throws ServletException, IOException {
         String token = extractToken(request);
 
-        if(token != null && jwtUtils.validateJwtToken(token)) {
+        if (token != null && jwtUtils.validateJwtToken(token)) {
             String email = jwtUtils.getUserNameFromJwtToken(token);
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email , null , null);
+
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        }else {
+        } else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Unauthorized: invalid or missing token");
+            response.getWriter().write("Invalid or expired token.");
+            return;
         }
-        filterChain.doFilter(request , response);
+
+        filterChain.doFilter(request, response);
     }
 
     private String extractToken(HttpServletRequest request) {
