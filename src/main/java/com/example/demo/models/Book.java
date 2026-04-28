@@ -36,7 +36,46 @@ public class Book {
         this.book_name = book_name;
     }
 
+    public String getBook_name() {
+        return book_name;
+    }
 
+    public void setBook_name(String book_name) {
+        this.book_name = book_name;
+    }
 
+    public String getNum_page() {
+        return num_page;
+    }
 
+    public void setNum_page(String num_page) {
+        this.num_page = num_page;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", book_name='" + book_name + '\'' +
+                ", num_page='" + num_page + '\'' +
+                ", author=" + author +
+                ", category=" + category +
+                '}';
+    }
 }
