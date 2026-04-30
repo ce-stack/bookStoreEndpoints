@@ -8,4 +8,8 @@ public interface UserRepositoryCustom {
     void addCommentToBook(Comment comment);
 
     void addRatingToBook(Rating rating);
+
+    void updateComment(Comment comment , int id);
+
+    Comment findCommentById(int id);
 }

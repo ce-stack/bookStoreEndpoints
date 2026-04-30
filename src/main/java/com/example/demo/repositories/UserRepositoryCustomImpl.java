@@ -1,5 +1,6 @@
 package com.example.demo.repositories;
 
+import com.example.demo.dto.UpdateCommentRequest;
 import com.example.demo.models.Comment;
 import com.example.demo.models.Rating;
 import jakarta.persistence.EntityManager;
@@ -24,4 +25,17 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom{
     public void addRatingToBook(Rating rating) {
         entityManager.persist(rating);
     }
+
+    @Override
+    public void updateComment(Comment comment, int id) {
+        entityManager.find(Comment.class , id);
+    }
+
+
+    @Override
+    public Comment findCommentById(int id) {
+      return entityManager.find(Comment.class , id);
+    }
+
+
 }
