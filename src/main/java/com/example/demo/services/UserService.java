@@ -11,6 +11,8 @@ import com.example.demo.repositories.UserRepositoryCustom;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -71,5 +73,9 @@ public class UserService {
         comment.setComment_value(request.getComment_value());
 
         return "comment updated success";
+    }
+
+    public List<Book> seachBook(String value) {
+        return userRepositoryCustom.SearchBook(value);
     }
 }
