@@ -17,17 +17,36 @@ public class SecurityConfig {
     public SecurityConfig(JwtUtils jwtUtils) {
         this.jwtUtils = jwtUtils;
     }
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .csrf(csrf -> csrf.disable())
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/auth/register", "/auth/login").permitAll()
+//                        .requestMatchers("/comment/add").authenticated()
+//                        .anyRequest().authenticated()
+//                )
+//                .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class)
+//                .httpBasic( httpBasic -> httpBasic.disable());
+//
+//        return http.build();
+//    }
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/register", "/auth/login").permitAll()
-                        .requestMatchers("/test").authenticated()
+                        .requestMatchers("/auth/register", "/auth/login", "/error").permitAll()
+                        .requestMatchers("/comment/add").authenticated()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class)
-                .httpBasic( httpBasic -> httpBasic.disable());
+                .addFilterBefore(
+                        new JwtAuthenticationFilter(jwtUtils),
+                        UsernamePasswordAuthenticationFilter.class
+                )
+                .httpBasic(httpBasic -> httpBasic.disable());
 
         return http.build();
     }

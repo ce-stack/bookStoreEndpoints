@@ -22,15 +22,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,HttpServletResponse response,FilterChain filterChain) throws ServletException, IOException {
-
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
 
-        if (AuthEnum.isPublicPath(path)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+        return path.equals("/auth/register")
+                || path.equals("/auth/login");
+    }
 
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
 
         String token = extractToken(request);
 
@@ -38,22 +42,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String email = jwtUtils.getUserNameFromJwtToken(token);
 
             UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
+                    new UsernamePasswordAuthenticationToken(
+                            email,
+                            null,
+                            Collections.emptyList()
+                    );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        } else {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Invalid or expired token.");
+
+            filterChain.doFilter(request, response);
             return;
         }
 
-        filterChain.doFilter(request, response);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write("Invalid or expired token.");
     }
 
     private String extractToken(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
 
-        if(header != null && header.startsWith("Bearer")) {
+        if (header != null && header.startsWith("Bearer ")) {
             return header.substring(7);
         }
 
