@@ -5,6 +5,9 @@ CREATE TABLE users (
        password VARCHAR(255) NOT NULL,
        role_id INT NOT NULL,
 
+       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+
        PRIMARY KEY (id),
 
        CONSTRAINT fk_users_role

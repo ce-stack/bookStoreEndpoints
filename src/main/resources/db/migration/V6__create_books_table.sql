@@ -5,6 +5,10 @@ CREATE TABLE books (
 
        author_id INT NOT NULL,
        category_id INT NOT NULL,
+
+       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+
        PRIMARY KEY (id) ,
        CONSTRAINT fk_books_author FOREIGN KEY (author_id)
            REFERENCES authors(id),
