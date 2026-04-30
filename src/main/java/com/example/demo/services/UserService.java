@@ -1,8 +1,10 @@
 package com.example.demo.services;
 
 import com.example.demo.dto.CommentRequest;
+import com.example.demo.dto.RatingRequest;
 import com.example.demo.models.Book;
 import com.example.demo.models.Comment;
+import com.example.demo.models.Rating;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepositoryCustom;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,26 @@ public class UserService {
         userRepositoryCustom.addCommentToBook(comment);
 
         return "comment added success";
+
+    }
+
+    public String userRatingToBook(RatingRequest request) {
+        Rating rating = new Rating();
+
+        rating.setValue(request.getValue());
+
+        Book book = new Book();
+        book.setId(request.getBook_id());
+
+        User user = new User();
+        user.setId(request.getUser_id());
+
+        rating.setBook(book);
+        rating.setUser(user);
+
+        userRepositoryCustom.addRatingToBook(rating);
+
+        return "rating added success";
 
     }
 }

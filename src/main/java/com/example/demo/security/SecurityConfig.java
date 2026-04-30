@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/register", "/auth/login", "/error").permitAll()
-                        .requestMatchers("/comment/add").authenticated()
+                        .requestMatchers("/comment/add" , "/comment/add_rating").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(

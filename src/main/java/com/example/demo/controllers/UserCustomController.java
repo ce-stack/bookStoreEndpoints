@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dto.CommentRequest;
+import com.example.demo.dto.RatingRequest;
 import com.example.demo.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,5 +22,10 @@ public class UserCustomController {
     @PostMapping("/add")
     public String userAddCommentToBook(@Valid @RequestBody CommentRequest request){
         return this.userService.userCommentToBook(request);
+    }
+
+    @PostMapping("/add_rating")
+    public String userAddRatingToBook(@Valid @RequestBody RatingRequest request) {
+        return this.userService.userRatingToBook(request);
     }
 }

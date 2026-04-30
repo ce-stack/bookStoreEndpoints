@@ -4,7 +4,8 @@ public enum AuthEnum {
 
     REGISTER("/auth/register"),
     LOGIN("/auth/login"),
-    AddComment("/comment/add");
+    AddComment("/comment/add"),
+    AddRating("comment/add_rating");
 
     private final String path;
 
