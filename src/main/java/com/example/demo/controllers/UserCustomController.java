@@ -4,6 +4,7 @@ import com.example.demo.dto.CommentRequest;
 import com.example.demo.dto.RatingRequest;
 import com.example.demo.dto.UpdateCommentRequest;
 import com.example.demo.models.Book;
+import com.example.demo.payload.response.ApiResponse;
 import com.example.demo.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class UserCustomController {
     }
 
     @PostMapping("/update_comment")
-    public String userUpdateComment(@Valid @RequestBody UpdateCommentRequest request) {
+    public ApiResponse userUpdateComment(@Valid @RequestBody UpdateCommentRequest request) {
         return this.userService.userUpdateComment(request , request.getId());
     }
 

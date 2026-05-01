@@ -3,10 +3,12 @@ package com.example.demo.services;
 import com.example.demo.dto.CommentRequest;
 import com.example.demo.dto.RatingRequest;
 import com.example.demo.dto.UpdateCommentRequest;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.models.Book;
 import com.example.demo.models.Comment;
 import com.example.demo.models.Rating;
 import com.example.demo.models.User;
+import com.example.demo.payload.response.ApiResponse;
 import com.example.demo.repositories.UserRepositoryCustom;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -62,17 +64,17 @@ public class UserService {
     }
 
     @Transactional
-    public String userUpdateComment(UpdateCommentRequest request, int id) {
+    public ApiResponse userUpdateComment(UpdateCommentRequest request, int id) {
 
         Comment comment = userRepositoryCustom.findCommentById(id);
 
         if (comment == null) {
-            throw new RuntimeException("comment not found");
+            throw new ResourceNotFoundException("comment not found");
         }
 
         comment.setComment_value(request.getComment_value());
 
-        return "comment updated success";
+        return new ApiResponse("comment updated success" , true);
     }
 
     public List<Book> seachBook(String value) {
