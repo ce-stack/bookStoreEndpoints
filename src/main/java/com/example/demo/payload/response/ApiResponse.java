@@ -1,17 +1,23 @@
 package com.example.demo.payload.response;
 
-public class ApiResponse {
+public class ApiResponse<T> {
 
     private String message;
 
+    private T data;
+
     private Boolean success;
 
-    public ApiResponse() {
+    public ApiResponse(String message , T data ,Boolean success) {
 
+            this.message = message;
+            this.data = data;
+            this.success = success;
     }
 
-    public ApiResponse(String message, Boolean success) {
+    public ApiResponse(String message ,Boolean success) {
         this.message = message;
+        this.data = null;
         this.success = success;
     }
 
@@ -22,6 +28,14 @@ public class ApiResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 
     public Boolean getSuccess() {

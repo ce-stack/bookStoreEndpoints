@@ -41,4 +41,9 @@ public class UserCustomController {
     public List<Book> searchBooks(@RequestBody Map<String , String>body) {
         return this.userService.seachBook(body.get("value"));
     }
+
+    @GetMapping("/all_books")
+    public ApiResponse allBooks() {
+        return this.userService.allBooks();
+    }
 }

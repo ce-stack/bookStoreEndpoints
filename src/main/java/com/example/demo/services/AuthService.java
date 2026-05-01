@@ -34,7 +34,7 @@ public class AuthService {
     public ApiResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
         jwtUtils.generateJwtToken(user.getEmail());
-        return new ApiResponse(jwtUtils.generateJwtToken(user.getEmail()), true);
+        return new ApiResponse<>(jwtUtils.generateJwtToken(user.getEmail()), true);
     }
 
     public ApiResponse register(RegisterRequest request){
@@ -44,7 +44,7 @@ public class AuthService {
         User newUser = new User(hashedPassword, defaultRole, defaultRole.getName(), request.getEmail(), request.getFull_name());
         userRepository.save(newUser);
         jwtUtils.generateJwtToken(newUser.getEmail());
-        return new ApiResponse(jwtUtils.generateJwtToken(newUser.getEmail()), true);
+        return new ApiResponse<>(jwtUtils.generateJwtToken(newUser.getEmail()), true);
     }
 
     public void logout(HttpServletRequest request) {

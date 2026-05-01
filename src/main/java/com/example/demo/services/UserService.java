@@ -9,6 +9,7 @@ import com.example.demo.models.Comment;
 import com.example.demo.models.Rating;
 import com.example.demo.models.User;
 import com.example.demo.payload.response.ApiResponse;
+import com.example.demo.repositories.BookRepository;
 import com.example.demo.repositories.UserRepositoryCustom;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,11 @@ import java.util.List;
 public class UserService {
 
     private final UserRepositoryCustom userRepositoryCustom;
-
-    public UserService(UserRepositoryCustom userRepositoryCustom) {
+    private final BookRepository bookRepository;
+    public UserService(UserRepositoryCustom userRepositoryCustom , BookRepository bookRepository)
+    {
         this.userRepositoryCustom = userRepositoryCustom;
+        this.bookRepository = bookRepository;
     }
 
     public ApiResponse userCommentToBook(CommentRequest request) {
@@ -39,7 +42,7 @@ public class UserService {
         comment.setUser(user);
         userRepositoryCustom.addCommentToBook(comment);
 
-        return new ApiResponse("book added success" , true);
+        return new ApiResponse<>("book added success" , true);
 
     }
 
@@ -74,10 +77,15 @@ public class UserService {
 
         comment.setComment_value(request.getComment_value());
 
-        return new ApiResponse("comment updated success" , true);
+        return new ApiResponse<>("comment updated success" , true);
     }
 
     public List<Book> seachBook(String value) {
         return userRepositoryCustom.SearchBook(value);
+    }
+
+    public ApiResponse allBooks(){
+        List<Book> books = bookRepository.findAll();
+        return new ApiResponse<>("all books" , books , true);
     }
 }

@@ -35,7 +35,7 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request){
         authService.logout(request);
-        return ResponseEntity.ok( new ApiResponse("logged out" , true));
+        return ResponseEntity.ok( new ApiResponse<>("logged out" , true));
     }
 
 
