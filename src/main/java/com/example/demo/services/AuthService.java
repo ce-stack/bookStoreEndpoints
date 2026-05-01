@@ -5,6 +5,7 @@ import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.models.Role;
 import com.example.demo.models.User;
+import com.example.demo.payload.response.ApiResponse;
 import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.security.JwtUtils;
@@ -30,18 +31,20 @@ public class AuthService {
         this.jwtUtils = jwtUtils;
     }
 
-    public String login(LoginRequest request) {
+    public ApiResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
-        return jwtUtils.generateJwtToken(user.getEmail());
+        jwtUtils.generateJwtToken(user.getEmail());
+        return new ApiResponse(jwtUtils.generateJwtToken(user.getEmail()), true);
     }
 
-    public String register(RegisterRequest request){
+    public ApiResponse register(RegisterRequest request){
         Optional<Role> defaultRoleOpt = roleRepository.findByName("USER");
         Role defaultRole = defaultRoleOpt.orElseThrow(() -> new RuntimeException("Role not found"));
         String hashedPassword = passwordEncoder.encode(request.getPassword());
         User newUser = new User(hashedPassword, defaultRole, defaultRole.getName(), request.getEmail(), request.getFull_name());
         userRepository.save(newUser);
-        return jwtUtils.generateJwtToken(newUser.getEmail());
+        jwtUtils.generateJwtToken(newUser.getEmail());
+        return new ApiResponse(jwtUtils.generateJwtToken(newUser.getEmail()), true);
     }
 
     public void logout(HttpServletRequest request) {

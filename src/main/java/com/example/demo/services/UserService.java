@@ -24,7 +24,7 @@ public class UserService {
         this.userRepositoryCustom = userRepositoryCustom;
     }
 
-    public String userCommentToBook(CommentRequest request) {
+    public ApiResponse userCommentToBook(CommentRequest request) {
         Comment comment = new Comment();
 
         comment.setComment_value(request.getComment_value());
@@ -39,11 +39,11 @@ public class UserService {
         comment.setUser(user);
         userRepositoryCustom.addCommentToBook(comment);
 
-        return "comment added success";
+        return new ApiResponse("book added success" , true);
 
     }
 
-    public String userRatingToBook(RatingRequest request) {
+    public ApiResponse userRatingToBook(RatingRequest request) {
         Rating rating = new Rating();
 
         rating.setValue(request.getValue());
@@ -59,7 +59,7 @@ public class UserService {
 
         userRepositoryCustom.addRatingToBook(rating);
 
-        return "rating added success";
+        return new ApiResponse("rating added success" , true);
 
     }
 

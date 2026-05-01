@@ -23,12 +23,12 @@ public class UserCustomController {
     }
 
     @PostMapping("/add")
-    public String userAddCommentToBook(@Valid @RequestBody CommentRequest request){
+    public ApiResponse userAddCommentToBook(@Valid @RequestBody CommentRequest request){
         return this.userService.userCommentToBook(request);
     }
 
     @PostMapping("/add_rating")
-    public String userAddRatingToBook(@Valid @RequestBody RatingRequest request) {
+    public ApiResponse userAddRatingToBook(@Valid @RequestBody RatingRequest request) {
         return this.userService.userRatingToBook(request);
     }
 

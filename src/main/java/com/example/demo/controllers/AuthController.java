@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
+import com.example.demo.payload.response.ApiResponse;
 import com.example.demo.services.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,18 +35,7 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request){
         authService.logout(request);
-        return ResponseEntity.ok("logged out");
-    }
-
-
-    @GetMapping("/test")
-    public String test() {
-        return  "secured endpoint";
-    }
-
-    @GetMapping("/not_test")
-    public String notTest() {
-        return "not";
+        return ResponseEntity.ok( new ApiResponse("logged out" , true));
     }
 
 
