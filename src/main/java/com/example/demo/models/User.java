@@ -3,6 +3,8 @@ package com.example.demo.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -27,6 +29,9 @@ public class User {
 
     @Column(name = "password")
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserBook> userBooks;
 
     public User() {
 
@@ -90,6 +95,14 @@ public class User {
     }
 
 
+    public List<UserBook> getUserBooks() {
+        return userBooks;
+    }
+
+    public void setUserBooks(List<UserBook> userBooks) {
+        this.userBooks = userBooks;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -99,6 +112,7 @@ public class User {
                 ", role_name='" + role_name + '\'' +
                 ", role=" + role +
                 ", password='" + password + '\'' +
+                ", userBooks=" + userBooks +
                 '}';
     }
 }
