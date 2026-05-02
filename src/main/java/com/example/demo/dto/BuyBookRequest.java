@@ -8,21 +8,16 @@ public class BuyBookRequest {
     private int user_id;
 
     @NotNull(message = "book is required")
-    private int book_id;
-
-    @NotNull(message = "price is required")
-    private double price;
+    private Long book_id;
 
     public BuyBookRequest() {
 
     }
 
-    public BuyBookRequest(int book_id, double price, int user_id) {
-        this.book_id = book_id;
-        this.price = price;
+    public BuyBookRequest(int user_id, Long book_id) {
         this.user_id = user_id;
+        this.book_id = book_id;
     }
-
 
     public int getUser_id() {
         return user_id;
@@ -32,19 +27,19 @@ public class BuyBookRequest {
         this.user_id = user_id;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getBook_id() {
+    public Long getBook_id() {
         return book_id;
     }
 
-    public void setBook_id(int book_id) {
+    public void setBook_id(Long book_id) {
         this.book_id = book_id;
+    }
+
+    @Override
+    public String toString() {
+        return "BuyBookRequest{" +
+                "user_id=" + user_id +
+                ", book_id=" + book_id +
+                '}';
     }
 }

@@ -8,7 +8,8 @@ public enum AuthEnum {
     AddRating("/comment/add_rating"),
     SearchBook("/search_book"),
     UpdateComment("/comment/update_comment"),
-    AllBooks("/comment/all_books");
+    AllBooks("/comment/all_books"),
+    BuyBook("/comment/buy_book");
 
     private final String path;
 

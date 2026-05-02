@@ -5,11 +5,9 @@ import com.example.demo.dto.CommentRequest;
 import com.example.demo.dto.RatingRequest;
 import com.example.demo.dto.UpdateCommentRequest;
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.models.Book;
-import com.example.demo.models.Comment;
-import com.example.demo.models.Rating;
-import com.example.demo.models.User;
+import com.example.demo.models.*;
 import com.example.demo.payload.response.ApiResponse;
+import com.example.demo.payload.response.ErrorResponse;
 import com.example.demo.repositories.BookRepository;
 import com.example.demo.repositories.UserRepositoryCustom;
 import jakarta.transaction.Transactional;
@@ -91,7 +89,40 @@ public class UserService {
     }
 
 
-//    public ApiResponse userBuyBook(BuyBookRequest request) {
-//        
-//    }
+    @Transactional
+    public ApiResponse userBuyBook(BuyBookRequest request) {
+        UserBook userBook = new UserBook();
+
+        Book book = bookRepository.findById(request.getBook_id())
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+
+        User user = new User();
+        user.setId(request.getUser_id());
+
+        userBook.setBook(book);
+        userBook.setUser(user);
+        userBook.setPrice(book.getPrice());
+
+        Boolean stockCount =  decreaseBookStock(book);
+
+        if (stockCount == false) {
+            return new ApiResponse("failed not enough stock" , false);
+        }
+
+        userRepositoryCustom.userBuyBook(userBook);
+
+        return new ApiResponse("success" , true);
+    }
+
+    private boolean decreaseBookStock(Book book) {
+        int stock = book.getStock();
+        if (stock != 0) {
+            book.setStock(stock - 1);
+            return true;
+        } else if (stock == 0){
+            return false;
+        } else {
+            return false;
+        }
+    }
 }

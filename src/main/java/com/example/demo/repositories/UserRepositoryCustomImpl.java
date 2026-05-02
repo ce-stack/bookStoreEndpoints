@@ -5,6 +5,7 @@ import com.example.demo.dto.UpdateCommentRequest;
 import com.example.demo.models.Book;
 import com.example.demo.models.Comment;
 import com.example.demo.models.Rating;
+import com.example.demo.models.UserBook;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -52,8 +53,8 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom{
     }
 
     @Override
-    public boolean userBuyBook(BuyBookRequest request) {
-        return false;
+    public void userBuyBook(UserBook userBook) {
+        entityManager.persist(userBook);
     }
 
 

@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.dto.BuyBookRequest;
 import com.example.demo.dto.CommentRequest;
 import com.example.demo.dto.RatingRequest;
 import com.example.demo.dto.UpdateCommentRequest;
@@ -45,5 +46,10 @@ public class UserCustomController {
     @GetMapping("/all_books")
     public ApiResponse allBooks() {
         return this.userService.allBooks();
+    }
+
+    @PostMapping("/buy_book")
+    public ApiResponse bookByUser(@Valid @RequestBody BuyBookRequest request) {
+        return this.userService.userBuyBook(request);
     }
 }

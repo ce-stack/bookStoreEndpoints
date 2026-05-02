@@ -4,6 +4,7 @@ import com.example.demo.dto.BuyBookRequest;
 import com.example.demo.models.Book;
 import com.example.demo.models.Comment;
 import com.example.demo.models.Rating;
+import com.example.demo.models.UserBook;
 
 import java.util.List;
 
@@ -19,6 +20,6 @@ public interface UserRepositoryCustom {
 
     List<Book> SearchBook(String value);
 
-    boolean userBuyBook(BuyBookRequest request);
+    void userBuyBook(UserBook userBook);
 
 }

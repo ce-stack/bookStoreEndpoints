@@ -20,13 +20,17 @@ public class UserBook {
     @JoinColumn(name = "book_id" , nullable = false)
     private Book book;
 
+    @Column(name = "price")
+    private double price;
+
     public UserBook() {
 
     }
 
-    public UserBook(Book book, User user) {
-        this.book = book;
+    public UserBook(User user, Book book, double price) {
         this.user = user;
+        this.book = book;
+        this.price = price;
     }
 
     public int getId() {
@@ -53,12 +57,11 @@ public class UserBook {
         this.book = book;
     }
 
-    @Override
-    public String toString() {
-        return "UserBook{" +
-                "id=" + id +
-                ", user=" + user +
-                ", book=" + book +
-                '}';
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }
