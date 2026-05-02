@@ -1,0 +1,2 @@
+ALTER TABLE user_books
+ADD price DECIMAL(10,2) NOT NULL DEFAULT 0.00;

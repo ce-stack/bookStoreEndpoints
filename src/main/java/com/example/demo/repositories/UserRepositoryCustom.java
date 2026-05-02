@@ -1,5 +1,6 @@
 package com.example.demo.repositories;
 
+import com.example.demo.dto.BuyBookRequest;
 import com.example.demo.models.Book;
 import com.example.demo.models.Comment;
 import com.example.demo.models.Rating;
@@ -17,5 +18,7 @@ public interface UserRepositoryCustom {
     Comment findCommentById(int id);
 
     List<Book> SearchBook(String value);
+
+    boolean userBuyBook(BuyBookRequest request);
 
 }

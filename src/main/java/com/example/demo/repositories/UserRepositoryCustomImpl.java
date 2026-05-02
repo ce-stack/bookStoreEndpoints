@@ -1,5 +1,6 @@
 package com.example.demo.repositories;
 
+import com.example.demo.dto.BuyBookRequest;
 import com.example.demo.dto.UpdateCommentRequest;
 import com.example.demo.models.Book;
 import com.example.demo.models.Comment;
@@ -50,7 +51,10 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom{
                 .getResultList();
     }
 
-
+    @Override
+    public boolean userBuyBook(BuyBookRequest request) {
+        return false;
+    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.dto.BuyBookRequest;
 import com.example.demo.dto.CommentRequest;
 import com.example.demo.dto.RatingRequest;
 import com.example.demo.dto.UpdateCommentRequest;
@@ -88,4 +89,9 @@ public class UserService {
         List<Book> books = bookRepository.findAll();
         return new ApiResponse<>("all books" , books , true);
     }
+
+
+//    public ApiResponse userBuyBook(BuyBookRequest request) {
+//        
+//    }
 }
