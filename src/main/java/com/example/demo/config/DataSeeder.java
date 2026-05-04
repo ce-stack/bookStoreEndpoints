@@ -26,22 +26,22 @@ public class DataSeeder {
         return args -> {
             Faker faker = new Faker();
 
-            if (bookRepository.count() > 0) return;
+            if (bookRepository.count() < 20000) return;
 
-            for (int i = 0; i < 100; i++) {
-                Category category = new Category();
-                category.setName(faker.book().genre()  + "#" + faker.number().numberBetween(1,10000));
+//            for (int i = 0; i < 100; i++) {
+//                Category category = new Category();
+//                category.setName(faker.book().genre()  + "#" + faker.number().numberBetween(1,10000));
+//
+//                categoryRepository.save(category);
+//            }
 
-                categoryRepository.save(category);
-            }
 
-
-            for (int i = 0; i <50 ; i++) {
-                Author author = new Author();
-                author.setName( faker.name().fullName() + "#" + faker.number().numberBetween(1,5));
-
-                authorRepository.save(author);
-            }
+//            for (int i = 0; i <50 ; i++) {
+//                Author author = new Author();
+//                author.setName( faker.name().fullName() + "#" + faker.number().numberBetween(1,5));
+//
+//                authorRepository.save(author);
+//            }
 
             List<Category> categories = categoryRepository.findAll();
             List<Author> authors = authorRepository.findAll();
