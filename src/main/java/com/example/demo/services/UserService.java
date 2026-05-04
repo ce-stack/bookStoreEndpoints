@@ -6,6 +6,7 @@ import com.example.demo.dto.RatingRequest;
 import com.example.demo.dto.UpdateCommentRequest;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.models.*;
+import com.example.demo.payload.response.ApiListResponse;
 import com.example.demo.payload.response.ApiResponse;
 import com.example.demo.payload.response.ErrorResponse;
 import com.example.demo.repositories.BookRepository;
@@ -27,73 +28,69 @@ public class UserService {
         this.userRepositoryCustom = userRepositoryCustom;
         this.bookRepository = bookRepository;
     }
-//
-//    public ApiResponse userCommentToBook(CommentRequest request) {
-//        Comment comment = new Comment();
-//
-//        comment.setComment_value(request.getComment_value());
-//
-//        Book book = new Book();
-//        book.setId(request.getBook_id());
-//
-//        User user = new User();
-//        user.setId(request.getUser_id());
-//
-//        comment.setBook(book);
-//        comment.setUser(user);
-//        userRepositoryCustom.addCommentToBook(comment);
-//
-//        return new ApiResponse<>("book added success" , true);
-//
-//    }
-//
-//    public ApiResponse userRatingToBook(RatingRequest request) {
-//        Rating rating = new Rating();
-//
-//        rating.setValue(request.getValue());
-//
-//        Book book = new Book();
-//        book.setId(request.getBook_id());
-//
-//        User user = new User();
-//        user.setId(request.getUser_id());
-//
-//        rating.setBook(book);
-//        rating.setUser(user);
-//
-//        userRepositoryCustom.addRatingToBook(rating);
-//
-//        return new ApiResponse("rating added success" , true);
-//
-//    }
-//
-//    @Transactional
-//    public ApiResponse userUpdateComment(UpdateCommentRequest request, int id) {
-//
-//        Comment comment = userRepositoryCustom.findCommentById(id);
-//
-//        if (comment == null) {
-//            throw new ResourceNotFoundException("comment not found");
-//        }
-//
-//        comment.setComment_value(request.getComment_value());
-//
-//        return new ApiResponse<>("comment updated success" , true);
-//    }
-//
-//    public List<Book> seachBook(String value) {
-//        return userRepositoryCustom.SearchBook(value);
-//    }
 
-//    public ApiResponse allBooks(){
-//        List<Book> books = bookRepository.findAll();
-//        return new ApiResponse<>("all books" , books , true);
-//    }
+    public ApiResponse userCommentToBook(CommentRequest request) {
+        Comment comment = new Comment();
 
-    public ApiResponse allBooks(int page , int size){
+        comment.setComment_value(request.getComment_value());
+
+        Book book = new Book();
+        book.setId(request.getBook_id());
+
+        User user = new User();
+        user.setId(request.getUser_id());
+
+        comment.setBook(book);
+        comment.setUser(user);
+        userRepositoryCustom.addCommentToBook(comment);
+
+        return new ApiResponse("book added success" ,true ,200);
+
+    }
+
+    public ApiResponse userRatingToBook(RatingRequest request) {
+        Rating rating = new Rating();
+
+        rating.setValue(request.getValue());
+
+        Book book = new Book();
+        book.setId(request.getBook_id());
+
+        User user = new User();
+        user.setId(request.getUser_id());
+
+        rating.setBook(book);
+        rating.setUser(user);
+
+        userRepositoryCustom.addRatingToBook(rating);
+
+        return new ApiResponse("rating added success" , true , 200);
+
+    }
+
+    @Transactional
+    public ApiResponse userUpdateComment(UpdateCommentRequest request, int id) {
+
+        Comment comment = userRepositoryCustom.findCommentById(id);
+
+        if (comment == null) {
+            throw new ResourceNotFoundException("comment not found");
+        }
+
+        comment.setComment_value(request.getComment_value());
+
+        return new ApiResponse("comment updated success" , true ,200);
+    }
+
+    public List<Book> searchBook(String value) {
+        return userRepositoryCustom.SearchBook(value);
+    }
+
+
+    public ApiListResponse allBooks(int page , int size){
         Page<Book> booksPage= bookRepository.findAll(PageRequest.of(page , size));
 
-        return new ApiResponse<>(
+        return new ApiListResponse<>(
                 "all books",
                 booksPage.getContent(),          // List<Book>
                 booksPage.getNumber(),
@@ -106,30 +103,30 @@ public class UserService {
     }
 
 
-//    @Transactional
-//    public ApiResponse userBuyBook(BuyBookRequest request) {
-//        UserBook userBook = new UserBook();
-//
-//        Book book = bookRepository.findById(request.getBook_id())
-//                .orElseThrow(() -> new RuntimeException("Book not found"));
-//
-//        User user = new User();
-//        user.setId(request.getUser_id());
-//
-//        userBook.setBook(book);
-//        userBook.setUser(user);
-//        userBook.setPrice(book.getPrice());
-//
-//        Boolean stockCount =  decreaseBookStock(book);
-//
-//        if (stockCount == false) {
-//            return new ApiResponse("failed not enough stock" , false);
-//        }
-//
-//        userRepositoryCustom.userBuyBook(userBook);
-//
-//        return new ApiResponse("success" , true);
-//    }
+    @Transactional
+    public ApiResponse userBuyBook(BuyBookRequest request) {
+        UserBook userBook = new UserBook();
+
+        Book book = bookRepository.findById(request.getBook_id())
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+
+        User user = new User();
+        user.setId(request.getUser_id());
+
+        userBook.setBook(book);
+        userBook.setUser(user);
+        userBook.setPrice(book.getPrice());
+
+        Boolean stockCount =  decreaseBookStock(book);
+
+        if (stockCount == false) {
+            return new ApiResponse("not enough stock" , false , 400);
+        }
+
+        userRepositoryCustom.userBuyBook(userBook);
+
+        return new ApiResponse("you buyed book success" , true , 200);
+    }
 
     private boolean decreaseBookStock(Book book) {
         int stock = book.getStock();

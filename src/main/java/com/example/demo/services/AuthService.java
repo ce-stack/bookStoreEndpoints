@@ -4,7 +4,6 @@ import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.models.Role;
 import com.example.demo.models.User;
-import com.example.demo.payload.response.ApiResponse;
 import com.example.demo.payload.response.AuthResponse;
 import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
