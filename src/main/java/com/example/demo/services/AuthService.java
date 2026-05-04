@@ -1,11 +1,11 @@
 package com.example.demo.services;
 
-import com.example.demo.dto.AuthResponse;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.models.Role;
 import com.example.demo.models.User;
 import com.example.demo.payload.response.ApiResponse;
+import com.example.demo.payload.response.AuthResponse;
 import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.security.JwtUtils;
@@ -31,20 +31,20 @@ public class AuthService {
         this.jwtUtils = jwtUtils;
     }
 
-    public ApiResponse login(LoginRequest request) {
+    public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
         jwtUtils.generateJwtToken(user.getEmail());
-        return new ApiResponse<>(jwtUtils.generateJwtToken(user.getEmail()), true);
+        return new AuthResponse( jwtUtils.generateJwtToken(user.getEmail()), "user logged in"  , true );
     }
 
-    public ApiResponse register(RegisterRequest request){
+    public AuthResponse register(RegisterRequest request){
         Optional<Role> defaultRoleOpt = roleRepository.findByName("USER");
         Role defaultRole = defaultRoleOpt.orElseThrow(() -> new RuntimeException("Role not found"));
         String hashedPassword = passwordEncoder.encode(request.getPassword());
         User newUser = new User(hashedPassword, defaultRole, defaultRole.getName(), request.getEmail(), request.getFull_name());
         userRepository.save(newUser);
         jwtUtils.generateJwtToken(newUser.getEmail());
-        return new ApiResponse<>(jwtUtils.generateJwtToken(newUser.getEmail()), true);
+        return new AuthResponse(jwtUtils.generateJwtToken(newUser.getEmail()), "user created" , true);
     }
 
     public void logout(HttpServletRequest request) {

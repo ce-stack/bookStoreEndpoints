@@ -4,6 +4,7 @@ package com.example.demo.controllers;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.payload.response.ApiResponse;
+import com.example.demo.payload.response.AuthResponse;
 import com.example.demo.services.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request){
         authService.logout(request);
-        return ResponseEntity.ok( new ApiResponse<>("logged out" , true));
+        return ResponseEntity.ok( new AuthResponse("" , "logged out" , true ));
     }
 
 

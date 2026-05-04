@@ -11,6 +11,8 @@ import com.example.demo.payload.response.ErrorResponse;
 import com.example.demo.repositories.BookRepository;
 import com.example.demo.repositories.UserRepositoryCustom;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,94 +27,109 @@ public class UserService {
         this.userRepositoryCustom = userRepositoryCustom;
         this.bookRepository = bookRepository;
     }
+//
+//    public ApiResponse userCommentToBook(CommentRequest request) {
+//        Comment comment = new Comment();
+//
+//        comment.setComment_value(request.getComment_value());
+//
+//        Book book = new Book();
+//        book.setId(request.getBook_id());
+//
+//        User user = new User();
+//        user.setId(request.getUser_id());
+//
+//        comment.setBook(book);
+//        comment.setUser(user);
+//        userRepositoryCustom.addCommentToBook(comment);
+//
+//        return new ApiResponse<>("book added success" , true);
+//
+//    }
+//
+//    public ApiResponse userRatingToBook(RatingRequest request) {
+//        Rating rating = new Rating();
+//
+//        rating.setValue(request.getValue());
+//
+//        Book book = new Book();
+//        book.setId(request.getBook_id());
+//
+//        User user = new User();
+//        user.setId(request.getUser_id());
+//
+//        rating.setBook(book);
+//        rating.setUser(user);
+//
+//        userRepositoryCustom.addRatingToBook(rating);
+//
+//        return new ApiResponse("rating added success" , true);
+//
+//    }
+//
+//    @Transactional
+//    public ApiResponse userUpdateComment(UpdateCommentRequest request, int id) {
+//
+//        Comment comment = userRepositoryCustom.findCommentById(id);
+//
+//        if (comment == null) {
+//            throw new ResourceNotFoundException("comment not found");
+//        }
+//
+//        comment.setComment_value(request.getComment_value());
+//
+//        return new ApiResponse<>("comment updated success" , true);
+//    }
+//
+//    public List<Book> seachBook(String value) {
+//        return userRepositoryCustom.SearchBook(value);
+//    }
 
-    public ApiResponse userCommentToBook(CommentRequest request) {
-        Comment comment = new Comment();
+//    public ApiResponse allBooks(){
+//        List<Book> books = bookRepository.findAll();
+//        return new ApiResponse<>("all books" , books , true);
+//    }
 
-        comment.setComment_value(request.getComment_value());
+    public ApiResponse allBooks(int page , int size){
+        Page<Book> booksPage= bookRepository.findAll(PageRequest.of(page , size));
 
-        Book book = new Book();
-        book.setId(request.getBook_id());
-
-        User user = new User();
-        user.setId(request.getUser_id());
-
-        comment.setBook(book);
-        comment.setUser(user);
-        userRepositoryCustom.addCommentToBook(comment);
-
-        return new ApiResponse<>("book added success" , true);
-
+        return new ApiResponse<>(
+                "all books",
+                booksPage.getContent(),          // List<Book>
+                booksPage.getNumber(),
+                booksPage.getSize(),
+                booksPage.getTotalElements(),
+                booksPage.getTotalPages(),
+                booksPage.isLast(),
+                true
+        );
     }
 
-    public ApiResponse userRatingToBook(RatingRequest request) {
-        Rating rating = new Rating();
 
-        rating.setValue(request.getValue());
-
-        Book book = new Book();
-        book.setId(request.getBook_id());
-
-        User user = new User();
-        user.setId(request.getUser_id());
-
-        rating.setBook(book);
-        rating.setUser(user);
-
-        userRepositoryCustom.addRatingToBook(rating);
-
-        return new ApiResponse("rating added success" , true);
-
-    }
-
-    @Transactional
-    public ApiResponse userUpdateComment(UpdateCommentRequest request, int id) {
-
-        Comment comment = userRepositoryCustom.findCommentById(id);
-
-        if (comment == null) {
-            throw new ResourceNotFoundException("comment not found");
-        }
-
-        comment.setComment_value(request.getComment_value());
-
-        return new ApiResponse<>("comment updated success" , true);
-    }
-
-    public List<Book> seachBook(String value) {
-        return userRepositoryCustom.SearchBook(value);
-    }
-
-    public ApiResponse allBooks(){
-        List<Book> books = bookRepository.findAll();
-        return new ApiResponse<>("all books" , books , true);
-    }
-
-
-    @Transactional
-    public ApiResponse userBuyBook(BuyBookRequest request) {
-        UserBook userBook = new UserBook();
-
-        Book book = bookRepository.findById(request.getBook_id())
-                .orElseThrow(() -> new RuntimeException("Book not found"));
-
-        User user = new User();
-        user.setId(request.getUser_id());
-
-        userBook.setBook(book);
-        userBook.setUser(user);
-        userBook.setPrice(book.getPrice());
-
-        Boolean stockCount =  decreaseBookStock(book);
-
-        if (stockCount == false) {
-            return new ApiResponse("failed not enough stock" , false);
-        }
-
-        userRepositoryCustom.userBuyBook(userBook);
-
-        return new ApiResponse("success" , true);
-    }
+//    @Transactional
+//    public ApiResponse userBuyBook(BuyBookRequest request) {
+//        UserBook userBook = new UserBook();
+//
+//        Book book = bookRepository.findById(request.getBook_id())
+//                .orElseThrow(() -> new RuntimeException("Book not found"));
+//
+//        User user = new User();
+//        user.setId(request.getUser_id());
+//
+//        userBook.setBook(book);
+//        userBook.setUser(user);
+//        userBook.setPrice(book.getPrice());
+//
+//        Boolean stockCount =  decreaseBookStock(book);
+//
+//        if (stockCount == false) {
+//            return new ApiResponse("failed not enough stock" , false);
+//        }
+//
+//        userRepositoryCustom.userBuyBook(userBook);
+//
+//        return new ApiResponse("success" , true);
+//    }
 
     private boolean decreaseBookStock(Book book) {
         int stock = book.getStock();

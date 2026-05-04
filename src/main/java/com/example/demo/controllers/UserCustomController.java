@@ -23,33 +23,33 @@ public class UserCustomController {
         this.userService = userService;
     }
 
-    @PostMapping("/add")
-    public ApiResponse userAddCommentToBook(@Valid @RequestBody CommentRequest request){
-        return this.userService.userCommentToBook(request);
-    }
-
-    @PostMapping("/add_rating")
-    public ApiResponse userAddRatingToBook(@Valid @RequestBody RatingRequest request) {
-        return this.userService.userRatingToBook(request);
-    }
-
-    @PostMapping("/update_comment")
-    public ApiResponse userUpdateComment(@Valid @RequestBody UpdateCommentRequest request) {
-        return this.userService.userUpdateComment(request , request.getId());
-    }
-
-    @PostMapping("/search_book")
-    public List<Book> searchBooks(@RequestBody Map<String , String>body) {
-        return this.userService.seachBook(body.get("value"));
-    }
+//    @PostMapping("/add")
+//    public ApiResponse userAddCommentToBook(@Valid @RequestBody CommentRequest request){
+//        return this.userService.userCommentToBook(request);
+//    }
+//
+//    @PostMapping("/add_rating")
+//    public ApiResponse userAddRatingToBook(@Valid @RequestBody RatingRequest request) {
+//        return this.userService.userRatingToBook(request);
+//    }
+//
+//    @PostMapping("/update_comment")
+//    public ApiResponse userUpdateComment(@Valid @RequestBody UpdateCommentRequest request) {
+//        return this.userService.userUpdateComment(request , request.getId());
+//    }
+//
+//    @PostMapping("/search_book")
+//    public List<Book> searchBooks(@RequestBody Map<String , String>body) {
+//        return this.userService.seachBook(body.get("value"));
+//    }
 
     @GetMapping("/all_books")
-    public ApiResponse allBooks() {
-        return this.userService.allBooks();
+    public ApiResponse allBooks(@RequestParam(defaultValue = "0")int page , @RequestParam(defaultValue = "10") int size ) {
+        return this.userService.allBooks(page , size);
     }
 
-    @PostMapping("/buy_book")
-    public ApiResponse bookByUser(@Valid @RequestBody BuyBookRequest request) {
-        return this.userService.userBuyBook(request);
-    }
+//    @PostMapping("/buy_book")
+//    public ApiResponse bookByUser(@Valid @RequestBody BuyBookRequest request) {
+//        return this.userService.userBuyBook(request);
+//    }
 }
