@@ -6,12 +6,14 @@ import com.example.demo.dto.request.RatingRequest;
 import com.example.demo.dto.request.UpdateCommentRequest;
 import com.example.demo.dto.response.AuthorListResponse;
 import com.example.demo.dto.response.BookDetailsResponse;
+import com.example.demo.dto.response.CategoryResponse;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.models.*;
 import com.example.demo.payload.response.ApiListResponse;
 import com.example.demo.payload.response.ApiResponse;
 import com.example.demo.repositories.AuthorRepository;
 import com.example.demo.repositories.BookRepository;
+import com.example.demo.repositories.CategoryRepository;
 import com.example.demo.repositories.UserRepositoryCustom;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -26,11 +28,13 @@ public class UserService {
     private final UserRepositoryCustom userRepositoryCustom;
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
-    public UserService(UserRepositoryCustom userRepositoryCustom , BookRepository bookRepository , AuthorRepository authorRepository)
+    private final CategoryRepository categoryRepository;
+    public UserService(UserRepositoryCustom userRepositoryCustom , BookRepository bookRepository , AuthorRepository authorRepository , CategoryRepository categoryRepository)
     {
         this.userRepositoryCustom = userRepositoryCustom;
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
+        this.categoryRepository  = categoryRepository;
     }
 
     public ApiResponse userCommentToBook(CommentRequest request) {
@@ -119,6 +123,21 @@ public class UserService {
                 authorPage.getTotalElements(),
                 authorPage.getTotalPages(),
                 authorPage.isLast(),
+                true
+        );
+    }
+
+    public ApiListResponse allCategories(int page , int size) {
+        Page<Category> categoryPage = categoryRepository.findAll(PageRequest.of(page, size));
+        List<CategoryResponse> categoryResponses = categoryPage.getContent().stream().map(CategoryResponse::new).toList();
+        return new ApiListResponse<>(
+                "All Categories",
+                categoryResponses,
+                categoryPage.getNumber(),
+                categoryPage.getSize(),
+                categoryPage.getTotalElements(),
+                categoryPage.getTotalPages(),
+                categoryPage.isLast(),
                 true
         );
     }

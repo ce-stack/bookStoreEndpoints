@@ -10,7 +10,8 @@ public enum AuthEnum {
     UpdateComment("/comment/update_comment"),
     AllBooks("/comment/all_books"),
     BuyBook("/comment/buy_book"),
-    AllAuthor("/comment/all_authors");
+    AllAuthor("/comment/all_authors"),
+    AllCategories("/comment/all_categories");
 
     private final String path;
 

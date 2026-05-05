@@ -58,4 +58,9 @@ public class UserCustomController {
     public ApiListResponse allAuthors(@RequestParam(defaultValue = "0")int page , @RequestParam(defaultValue = "2")int size) {
         return this.userService.allAuthors(page , size);
     }
+
+    @GetMapping("/all_categories")
+    public ApiListResponse allCategories(@RequestParam(defaultValue = "0")int page , @RequestParam(defaultValue = "5")int size ) {
+        return this.userService.allCategories(page , size);
+    }
 }

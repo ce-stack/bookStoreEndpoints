@@ -24,7 +24,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/register", "/auth/login", "/error").permitAll()
-                        .requestMatchers("/comment/add" , "/comment/add_rating , '/comment/update_comment","/comment/search_book","/comment/all_books" , "/comment/buy_book" , "/comment/all_authors").authenticated()
+                        .requestMatchers("/comment/add" , "/comment/add_rating , '/comment/update_comment","/comment/search_book","/comment/all_books" , "/comment/buy_book" , "/comment/all_authors" , "/comment/all_categories").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(
