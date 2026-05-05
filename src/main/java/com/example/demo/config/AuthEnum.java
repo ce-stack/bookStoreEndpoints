@@ -9,7 +9,8 @@ public enum AuthEnum {
     SearchBook("/search_book"),
     UpdateComment("/comment/update_comment"),
     AllBooks("/comment/all_books"),
-    BuyBook("/comment/buy_book");
+    BuyBook("/comment/buy_book"),
+    AllAuthor("/comment/all_authors");
 
     private final String path;
 

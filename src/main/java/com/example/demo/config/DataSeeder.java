@@ -49,7 +49,7 @@ public class DataSeeder {
             List<Book> books = new ArrayList<>();
             int batchingSize = 1000;
 
-            for (int i = 0; i <20000 ; i++) {
+            for (int i = 0; i > 20000 ; i++) {
 
                 Book book = new Book();
                 book.setBook_name(faker.book().title() + "#" + UUID.randomUUID());

@@ -4,11 +4,13 @@ import com.example.demo.dto.request.BuyBookRequest;
 import com.example.demo.dto.request.CommentRequest;
 import com.example.demo.dto.request.RatingRequest;
 import com.example.demo.dto.request.UpdateCommentRequest;
+import com.example.demo.dto.response.AuthorListResponse;
 import com.example.demo.dto.response.BookDetailsResponse;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.models.*;
 import com.example.demo.payload.response.ApiListResponse;
 import com.example.demo.payload.response.ApiResponse;
+import com.example.demo.repositories.AuthorRepository;
 import com.example.demo.repositories.BookRepository;
 import com.example.demo.repositories.UserRepositoryCustom;
 import jakarta.transaction.Transactional;
@@ -23,10 +25,12 @@ public class UserService {
 
     private final UserRepositoryCustom userRepositoryCustom;
     private final BookRepository bookRepository;
-    public UserService(UserRepositoryCustom userRepositoryCustom , BookRepository bookRepository)
+    private final AuthorRepository authorRepository;
+    public UserService(UserRepositoryCustom userRepositoryCustom , BookRepository bookRepository , AuthorRepository authorRepository)
     {
         this.userRepositoryCustom = userRepositoryCustom;
         this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
     }
 
     public ApiResponse userCommentToBook(CommentRequest request) {
@@ -89,10 +93,8 @@ public class UserService {
 
     public ApiListResponse allBooks(int page , int size){
         Page<Book> booksPage= bookRepository.findAll(PageRequest.of(page , size));
-
         List<BookDetailsResponse> bookDetailsResponses = booksPage.getContent().stream().map(BookDetailsResponse::new)
                 .toList();
-
         return new ApiListResponse<>(
                 "all books",
                 bookDetailsResponses,
@@ -101,6 +103,22 @@ public class UserService {
                 booksPage.getTotalElements(),
                 booksPage.getTotalPages(),
                 booksPage.isLast(),
+                true
+        );
+    }
+
+    public ApiListResponse allAuthors(int page , int size) {
+        Page<Author> authorPage = authorRepository.findAll(PageRequest.of(page , size));
+        List<AuthorListResponse> authorListResponseList = authorPage.getContent().stream().map(AuthorListResponse::new)
+                .toList();
+        return new ApiListResponse<>(
+                "All Authors",
+                authorListResponseList,
+                authorPage.getNumber(),
+                authorPage.getSize(),
+                authorPage.getTotalElements(),
+                authorPage.getTotalPages(),
+                authorPage.isLast(),
                 true
         );
     }
@@ -142,4 +160,6 @@ public class UserService {
             return false;
         }
     }
+
+
 }

@@ -53,4 +53,9 @@ public class UserCustomController {
     public ApiResponse bookByUser(@Valid @RequestBody BuyBookRequest request) {
         return this.userService.userBuyBook(request);
     }
+
+    @GetMapping("/all_authors")
+    public ApiListResponse allAuthors(@RequestParam(defaultValue = "0")int page , @RequestParam(defaultValue = "2")int size) {
+        return this.userService.allAuthors(page , size);
+    }
 }
