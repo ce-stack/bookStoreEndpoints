@@ -1,9 +1,9 @@
 package com.example.demo.controllers;
 
-import com.example.demo.dto.BuyBookRequest;
-import com.example.demo.dto.CommentRequest;
-import com.example.demo.dto.RatingRequest;
-import com.example.demo.dto.UpdateCommentRequest;
+import com.example.demo.dto.request.BuyBookRequest;
+import com.example.demo.dto.request.CommentRequest;
+import com.example.demo.dto.request.RatingRequest;
+import com.example.demo.dto.request.UpdateCommentRequest;
 import com.example.demo.models.Book;
 import com.example.demo.payload.response.ApiListResponse;
 import com.example.demo.payload.response.ApiResponse;

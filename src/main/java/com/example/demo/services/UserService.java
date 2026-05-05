@@ -1,14 +1,14 @@
 package com.example.demo.services;
 
-import com.example.demo.dto.BuyBookRequest;
-import com.example.demo.dto.CommentRequest;
-import com.example.demo.dto.RatingRequest;
-import com.example.demo.dto.UpdateCommentRequest;
+import com.example.demo.dto.request.BuyBookRequest;
+import com.example.demo.dto.request.CommentRequest;
+import com.example.demo.dto.request.RatingRequest;
+import com.example.demo.dto.request.UpdateCommentRequest;
+import com.example.demo.dto.response.BookDetailsResponse;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.models.*;
 import com.example.demo.payload.response.ApiListResponse;
 import com.example.demo.payload.response.ApiResponse;
-import com.example.demo.payload.response.ErrorResponse;
 import com.example.demo.repositories.BookRepository;
 import com.example.demo.repositories.UserRepositoryCustom;
 import jakarta.transaction.Transactional;
@@ -90,9 +90,12 @@ public class UserService {
     public ApiListResponse allBooks(int page , int size){
         Page<Book> booksPage= bookRepository.findAll(PageRequest.of(page , size));
 
+        List<BookDetailsResponse> bookDetailsResponses = booksPage.getContent().stream().map(BookDetailsResponse::new)
+                .toList();
+
         return new ApiListResponse<>(
                 "all books",
-                booksPage.getContent(),          // List<Book>
+                bookDetailsResponses,
                 booksPage.getNumber(),
                 booksPage.getSize(),
                 booksPage.getTotalElements(),

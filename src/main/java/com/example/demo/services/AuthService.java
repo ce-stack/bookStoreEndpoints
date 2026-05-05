@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
+import com.example.demo.dto.request.LoginRequest;
+import com.example.demo.dto.request.RegisterRequest;
 import com.example.demo.models.Role;
 import com.example.demo.models.User;
 import com.example.demo.payload.response.AuthResponse;
