@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.dto.request.LoginRequest;
 import com.example.demo.dto.request.RegisterRequest;
 import com.example.demo.models.Role;
 import com.example.demo.models.User;
@@ -16,8 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -71,6 +71,39 @@ public class AuthServiceTest {
         verify(userRepository).existsByEmail("amirunitTest@gmail.com");
         verify(passwordEncoder).encode("password123");
         verify(userRepository).save(any(User.class));
+    }
+
+    @Test
+    void login_user_when_email_exist() {
+
+        //arrange
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setEmail("amirtestunit@gmail.com");
+        loginRequest.setPassword("password123");
+
+        User user = new User();
+        user.setEmail("amirtestunit@gmail.com");
+        user.setPassword("encoded-password");
+
+        when(userRepository.findByEmail("amirtestunit@gmail.com")).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("password123" , "encoded-password")).thenReturn(true);
+        when(jwtUtils.generateJwtToken("amirtestunit@gmail.com")).thenReturn("fake-jwt-token");
+
+        //act
+        AuthResponse authResponse = authService.login(loginRequest);
+
+        //assert
+        assertNotNull(authResponse);
+        assertEquals("fake-jwt-token" , authResponse.getToken());
+        assertEquals("user logged in" , authResponse.getMessage());
+        assertEquals(true , authResponse.getSuccess());
+
+        //verify
+        verify(userRepository).findByEmail("amirtestunit@gmail.com");
+        verify(passwordEncoder).matches("password123" , "encoded-password");
+        verify(jwtUtils).generateJwtToken("amirtestunit@gmail.com");
+
+
     }
 
 }

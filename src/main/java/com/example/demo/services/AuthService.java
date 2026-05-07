@@ -33,8 +33,11 @@ public class AuthService {
 
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
-        jwtUtils.generateJwtToken(user.getEmail());
-        return new AuthResponse( jwtUtils.generateJwtToken(user.getEmail()), "user logged in"  , true );
+        if (!passwordEncoder.matches(request.getPassword() , user.getPassword())){
+            throw new RuntimeException("invalid password");
+        }
+       String token = jwtUtils.generateJwtToken(user.getEmail());
+        return new AuthResponse( token, "user logged in"  , true );
     }
 
     public AuthResponse register(RegisterRequest request){
