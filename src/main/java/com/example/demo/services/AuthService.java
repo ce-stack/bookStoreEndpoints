@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.dto.request.LoginRequest;
 import com.example.demo.dto.request.RegisterRequest;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.models.Role;
 import com.example.demo.models.User;
 import com.example.demo.payload.response.AuthResponse;
@@ -37,6 +38,11 @@ public class AuthService {
     }
 
     public AuthResponse register(RegisterRequest request){
+
+        if(userRepository.existsByEmail(request.getEmail())) {
+            throw new ResourceNotFoundException("email already exist");
+        }
+
         Optional<Role> defaultRoleOpt = roleRepository.findByName("USER");
         Role defaultRole = defaultRoleOpt.orElseThrow(() -> new RuntimeException("Role not found"));
         String hashedPassword = passwordEncoder.encode(request.getPassword());
