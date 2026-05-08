@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 
 import com.example.demo.dto.request.CommentRequest;
+import com.example.demo.dto.request.UpdateCommentRequest;
 import com.example.demo.models.Comment;
 import com.example.demo.payload.response.ApiResponse;
 import com.example.demo.repositories.UserRepository;
@@ -15,6 +16,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
 public class CommentServiceTest {
 
@@ -57,5 +61,26 @@ public class CommentServiceTest {
 
 
 
+    }
+
+    @Test
+    void user_can_update_comment() {
+        //arrange
+        UpdateCommentRequest updateCommentRequest = new UpdateCommentRequest();
+        updateCommentRequest.setComment_value("updated comment!");
+        updateCommentRequest.setId(1);
+        Comment existComment = new Comment();
+        existComment.setId(1);
+        existComment.setComment_value("old comment!");
+        when(userRepositoryCustom.findCommentById(1)).thenReturn(existComment);
+
+        //act
+        ApiResponse apiResponse = userService.userUpdateComment(updateCommentRequest, updateCommentRequest.getId());
+
+        //assert
+        assertNotNull(apiResponse);
+        
+        assertEquals("updated comment!" , existComment.getComment_value());
+        verify(userRepositoryCustom).findCommentById(1);
     }
 }
