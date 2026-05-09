@@ -1,10 +1,14 @@
 package com.example.demo.services;
 
 
+import com.example.demo.dto.request.BuyBookRequest;
 import com.example.demo.dto.request.CommentRequest;
 import com.example.demo.dto.request.UpdateCommentRequest;
+import com.example.demo.models.Book;
 import com.example.demo.models.Comment;
+import com.example.demo.models.User;
 import com.example.demo.payload.response.ApiResponse;
+import com.example.demo.repositories.BookRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.UserRepositoryCustom;
 import com.example.demo.security.JwtUtils;
@@ -14,6 +18,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
+
 import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -27,6 +34,9 @@ public class CommentServiceTest {
 
     @Mock
     private UserRepositoryCustom userRepositoryCustom;
+
+    @Mock
+    private BookRepository bookRepository;
 
     @InjectMocks
     private UserService userService;
@@ -82,5 +92,31 @@ public class CommentServiceTest {
         
         assertEquals("updated comment!" , existComment.getComment_value());
         verify(userRepositoryCustom).findCommentById(1);
+    }
+
+    @Test
+    void user_can_buy_book() {
+
+        //arrange
+        Book book = new Book();
+        book.setId(1);
+        book.setPrice(100);
+        book.setStock(5);
+        when(bookRepository.findById(1l)).thenReturn(Optional.of(book));
+
+        BuyBookRequest buyBookRequest = new BuyBookRequest();
+        buyBookRequest.setUser_id(1);
+        buyBookRequest.setBook_id(1l);
+
+        Boolean stockCount = true;
+
+        //act
+        ApiResponse apiResponse = userService.userBuyBook(buyBookRequest);
+
+        //assert
+        assertNotNull(apiResponse);
+        assertEquals("you buyed book success" , apiResponse.getStatus());
+        assertEquals(true , apiResponse.getSuccess());
+        assertEquals(200 , apiResponse.getCode());
     }
 }
